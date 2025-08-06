@@ -53,7 +53,7 @@ You do **not** need to install Maven or Java locally. Everything is handled insi
 1. **Clone the project**
 
 ```bash
-git clone https://github.com/your-username/video-subtitle-generator.git
+git clone https://github.com/hashenkottegoda/Video-Subtitle-Generator.git
 cd video-subtitle-generator
 ```
 
