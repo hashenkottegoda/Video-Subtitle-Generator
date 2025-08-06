@@ -1,0 +1,50 @@
+# Java build artifacts
+/backend/target/
+/backend/.mvn/
+/backend/*.iml
+
+# Maven & IntelliJ IDEA
+*.class
+*.log
+*.jar
+*.war
+*.ear
+.idea/
+*.ipr
+*.iws
+*.iml
+
+# Python build/cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.eggs/
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Docker
+*.pid
+*.env
+.dockerignore
+
+# System
+.DS_Store
+Thumbs.db
+
+# Uploads & generated subtitles
+/uploads/*
+
+# Logs
+*.log
+logs/
+
+# Python Transcriber cache
+/transcriber/__pycache__/
+/transcriber/*.pyc

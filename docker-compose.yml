@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./uploads:/uploads # 👈 mount uploads/ to /uploads
+    depends_on:
+      - transcriber
+
+  transcriber:
+    build: ./transcriber
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./uploads:/uploads # 👈 same mount here too
+
