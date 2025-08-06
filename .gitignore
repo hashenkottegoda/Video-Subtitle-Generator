@@ -48,3 +48,7 @@ logs/
 # Python Transcriber cache
 /transcriber/__pycache__/
 /transcriber/*.pyc
+
+# frontend build artifacts
+/frontend/node_modules/
+

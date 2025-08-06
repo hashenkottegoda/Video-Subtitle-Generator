@@ -9,6 +9,8 @@ services:
       - ./uploads:/uploads
     depends_on:
       - transcriber
+    networks:
+      - subtitle-net
 
   transcriber:
     build: ./transcriber
@@ -16,3 +18,20 @@ services:
       - "5001:5001"
     volumes:
       - ./uploads:/uploads
+    networks:
+      - subtitle-net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    networks:
+      - subtitle-net
+    depends_on:
+      - backend
+
+networks:
+  subtitle-net:
+    driver: bridge

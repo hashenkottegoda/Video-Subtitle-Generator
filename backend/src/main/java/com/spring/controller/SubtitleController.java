@@ -11,12 +11,14 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class SubtitleController {
 
     private final Path uploadDir = Paths.get("/uploads");
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> handleUpload(@RequestParam("file") MultipartFile file) {
         try {
@@ -56,6 +58,7 @@ public class SubtitleController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadSubtitle(@RequestParam("file") String file) throws IOException {
         Path srtPath = uploadDir.resolve(file);
