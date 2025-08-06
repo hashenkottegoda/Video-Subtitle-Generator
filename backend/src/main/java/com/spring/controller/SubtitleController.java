@@ -18,32 +18,41 @@ public class SubtitleController {
     private final Path uploadDir = Paths.get("/uploads");
 
     @PostMapping("/upload")
-    public ResponseEntity<String> handleUpload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> handleUpload(@RequestParam("file") MultipartFile file) {
         try {
             Files.createDirectories(uploadDir);
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path filePath = uploadDir.resolve(fileName);
-            file.transferTo(filePath);
+            String originalName = file.getOriginalFilename();
+            String timestamp = String.valueOf(System.currentTimeMillis());
+            String videoName = timestamp + "_" + originalName;
+            Path videoPath = uploadDir.resolve(videoName);
+            file.transferTo(videoPath);
 
+            // Call Python Whisper service
             RestTemplate restTemplate = new RestTemplate();
-            String pythonServiceUrl = "http://transcriber:5001/transcribe";
-            Map<String, String> reqBody = Map.of("video_path", filePath.toString());
+            String transcriberUrl = "http://transcriber:5001/transcribe";
+            Map<String, String> requestBody = Map.of("video_path", videoPath.toString());
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Map<String, String>> request = new HttpEntity<>(reqBody, headers);
+            HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
 
-            ResponseEntity<Map> response = restTemplate.postForEntity(pythonServiceUrl, request, Map.class);
+            ResponseEntity<Map> response = restTemplate.postForEntity(transcriberUrl, request, Map.class);
 
-            if (response.getStatusCode() == HttpStatus.OK) {
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 String srtPath = (String) response.getBody().get("srt_path");
-                return ResponseEntity.ok("Subtitle ready: /api/download?file=" + Paths.get(srtPath).getFileName());
+                String srtFileName = Paths.get(srtPath).getFileName().toString();
+
+                return ResponseEntity.ok(Map.of(
+                        "uploaded", videoName,
+                        "subtitle", srtFileName,
+                        "download", "/api/download?file=" + srtFileName
+                ));
             }
 
-            return ResponseEntity.status(500).body("Transcription failed.");
+            return ResponseEntity.status(500).body(Map.of("error", "Transcription failed"));
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Upload failed: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
     }
 

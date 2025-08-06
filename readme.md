@@ -54,7 +54,6 @@ You do **not** need to install Maven or Java locally. Everything is handled insi
 
 ```bash
 git clone https://github.com/hashenkottegoda/Video-Subtitle-Generator.git
-cd video-subtitle-generator
 ```
 
 2. **Start everything using Docker Compose**
@@ -112,7 +111,7 @@ curl -X POST http://localhost:5001/transcribe \
 3. Download the subtitle file:
 
 ```bash
-http://localhost:8080/api/download?file=somefile.srt
+http://localhost:8080/{download link from response)
 ```
 
 ### File Structure Overview
