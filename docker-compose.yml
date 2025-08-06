@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./uploads:/uploads # 👈 mount uploads/ to /uploads
+      - ./uploads:/uploads
     depends_on:
       - transcriber
 
@@ -15,5 +15,4 @@ services:
     ports:
       - "5001:5001"
     volumes:
-      - ./uploads:/uploads # 👈 same mount here too
-
+      - ./uploads:/uploads

@@ -5,7 +5,6 @@ from datetime import timedelta
 import os
 
 def extract_audio(video_path, audio_path):
-    # Use ffmpeg directly
     command = [
         "ffmpeg",
         "-i", video_path,
