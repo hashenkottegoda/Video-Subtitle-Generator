@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./App.css";
 
-export default function SubtitleGenerator() {
+function App() {
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadLink, setDownloadLink] = useState("");
@@ -36,39 +37,47 @@ export default function SubtitleGenerator() {
 
       const { subtitle, download } = response.data;
       setDownloadLink("http://localhost:8080" + download);
-      setMessage(`Subtitles generated: ${subtitle}`);
+      setMessage(`✅ Subtitles generated: ${subtitle}`);
     } catch (err) {
       console.error(err);
-      setMessage("Error generating subtitles.");
+      setMessage("❌ Error generating subtitles.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 600,
-        margin: "0 auto",
-        padding: 20,
-        fontFamily: "sans-serif",
-      }}
-    >
-      <h2>🎬 Video Subtitle Generator</h2>
-      <input type="file" accept="video/mp4" onChange={handleFileChange} />
-      <br />
-      <br />
-      <button onClick={handleUpload} disabled={isLoading}>
-        {isLoading ? "Processing..." : "Generate Subtitles"}
-      </button>
-      <br />
-      <br />
-      {message && <p>{message}</p>}
-      {downloadLink && (
-        <a href={downloadLink} download style={{ fontWeight: "bold" }}>
-          ⬇️ Download Subtitle File
-        </a>
-      )}
+    <div className="app-page">
+      <div className="app-card">
+        <h2 className="app-title">🎬 Video Subtitle Generator</h2>
+        <input
+          type="file"
+          accept="video/mp4"
+          onChange={handleFileChange}
+          className="app-input"
+        />
+        <button
+          onClick={handleUpload}
+          disabled={isLoading}
+          className="app-button"
+        >
+          {isLoading ? (
+            <span>
+              <span className="spinner" /> Processing...
+            </span>
+          ) : (
+            "Generate Subtitles"
+          )}
+        </button>
+        {message && <p className="app-message">{message}</p>}
+        {downloadLink && (
+          <a href={downloadLink} download className="app-link">
+            ⬇️ Download Subtitle File
+          </a>
+        )}
+      </div>
     </div>
   );
 }
+
+export default App;
